@@ -3,21 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>家庭用レシピ保存</title>
+  <title>レシピ保存アプリ</title>
   <style>
     :root {
-      --bg: #f7f5ef;
-      --surface: #fffdfa;
-      --surface-strong: #ffffff;
-      --text: #24211d;
-      --muted: #706b62;
-      --line: #ded7cb;
-      --primary: #25635a;
-      --primary-dark: #174b44;
-      --accent: #c8553d;
-      --soft: #e8f0eb;
-      --danger: #b3261e;
-      --shadow: 0 10px 28px rgba(47, 39, 27, 0.08);
+      --bg: #fbfcfb;
+      --surface: #ffffff;
+      --text: #1f2328;
+      --muted: #6b7280;
+      --line: #dfe7e2;
+      --soft-line: #ecf1ee;
+      --primary: #28a86b;
+      --primary-dark: #168653;
+      --primary-soft: #e9f8ef;
+      --blue: #3f6fb5;
+      --warning: #fff8db;
+      --danger: #dc2626;
+      --shadow: 0 12px 30px rgba(18, 45, 31, 0.08);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
@@ -34,7 +35,6 @@
 
     button,
     input,
-    select,
     textarea {
       font: inherit;
     }
@@ -42,157 +42,366 @@
     button {
       border: 0;
       cursor: pointer;
+      background: transparent;
     }
 
     button:disabled {
       cursor: not-allowed;
-      opacity: 0.58;
-    }
-
-    .app-shell {
-      width: min(980px, 100%);
-      margin: 0 auto;
-      padding: 18px 14px 32px;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .brand {
-      min-width: 0;
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: 1.45rem;
-      letter-spacing: 0;
-    }
-
-    .brand p {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 0.88rem;
-    }
-
-    .toolbar {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .view {
-      display: none;
-    }
-
-    .view.active {
-      display: block;
-    }
-
-    .panel {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      box-shadow: var(--shadow);
-      padding: 14px;
-    }
-
-    .home-controls {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .search-wrap {
-      position: relative;
-    }
-
-    .search-wrap svg {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      pointer-events: none;
-    }
-
-    .search-wrap input {
-      padding-left: 40px;
+      opacity: 0.6;
     }
 
     input,
-    select,
     textarea {
       width: 100%;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--surface-strong);
+      background: #fff;
       color: var(--text);
-      padding: 11px 12px;
+      padding: 12px;
       outline: none;
     }
 
     textarea {
-      min-height: 118px;
+      min-height: 190px;
+      line-height: 1.58;
       resize: vertical;
-      line-height: 1.55;
     }
 
     input:focus,
-    select:focus,
     textarea:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 90, 0.13);
+      box-shadow: 0 0 0 3px rgba(40, 168, 107, 0.14);
     }
 
-    .btn {
+    .app {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 16px 12px 84px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+
+    .logo {
+      width: 78px;
+      height: 78px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #9bdcac, #57be80);
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.85rem, 4vw, 2.55rem);
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .flow {
+      margin-bottom: 28px;
+    }
+
+    .flow h2 {
+      margin: 0 0 14px;
+      color: var(--primary-dark);
+      font-size: 1.2rem;
+      letter-spacing: 0;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .flow-card {
+      min-height: 112px;
+      border: 1px solid #bfe5ce;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #fbfffd, #f6fbf8);
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .flow-card h3 {
+      margin: 0 0 8px;
+      color: var(--primary-dark);
+      font-size: 1.08rem;
+      letter-spacing: 0;
+    }
+
+    .flow-card p {
+      margin: 0;
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    .num {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      margin-right: 8px;
+      border: 2px solid var(--primary);
+      border-radius: 999px;
+      color: var(--primary-dark);
+    }
+
+    .flow-arrow {
+      color: var(--primary-dark);
+    }
+
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+
+    .phone {
+      min-height: 690px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .phone-head {
+      height: 58px;
+      display: grid;
+      grid-template-columns: 44px 1fr 44px;
+      align-items: center;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--soft-line);
+    }
+
+    .phone-head h2 {
+      margin: 0;
+      text-align: center;
+      font-size: 1rem;
+      letter-spacing: 0;
+    }
+
+    .head-action {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .view {
+      display: none;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .view.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content {
+      flex: 1;
+      overflow: auto;
+      padding: 18px;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      color: var(--primary-dark);
+      font-size: 0.94rem;
+      letter-spacing: 0;
+    }
+
+    .drop-zone {
+      border: 1px dashed #b7cdea;
+      border-radius: 8px;
+      min-height: 170px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 22px 14px;
+      color: var(--blue);
+      background: #fbfdff;
+      margin-bottom: 16px;
+    }
+
+    .drop-zone strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    .drop-zone span {
+      display: block;
+      margin-top: 8px;
+      color: #8a96a8;
+      font-size: 0.82rem;
+    }
+
+    .choice-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 12px 0 20px;
+    }
+
+    .choice {
+      min-height: 42px;
+      border-radius: 8px;
+      background: #f6f8fa;
+      color: var(--text);
+      font-weight: 800;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 7px;
-      min-height: 42px;
-      border-radius: 8px;
-      padding: 9px 13px;
-      background: var(--primary);
-      color: white;
-      font-weight: 700;
-      white-space: nowrap;
     }
 
-    .btn:hover {
+    .preview-img {
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #f7f7f7;
+      display: none;
+      margin-bottom: 18px;
+    }
+
+    .primary-btn {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .primary-btn:hover {
       background: var(--primary-dark);
     }
 
-    .btn.secondary {
-      background: var(--soft);
-      color: var(--primary-dark);
+    .notice {
+      border-radius: 8px;
+      background: var(--warning);
+      color: #64604b;
+      text-align: center;
+      padding: 14px;
+      font-size: 0.88rem;
+      line-height: 1.55;
     }
 
-    .btn.secondary:hover {
-      background: #dce9e2;
+    .form-field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
     }
 
-    .btn.ghost {
-      background: transparent;
+    .form-field label {
+      font-weight: 900;
+      font-size: 0.92rem;
+    }
+
+    .label-note {
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .save-chip {
+      border: 1px solid #9dddb8;
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-weight: 900;
+      font-size: 0.84rem;
+    }
+
+    .recipe-title {
+      margin: 8px 0 24px;
+      font-size: 1.24rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      border-radius: 999px;
+      background: var(--primary-soft);
       color: var(--primary-dark);
+      padding: 4px 10px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .info-box {
       border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(31, 35, 40, 0.04);
+      white-space: pre-wrap;
+      line-height: 1.58;
+      overflow-wrap: anywhere;
+      margin-bottom: 16px;
     }
 
-    .btn.danger {
-      background: #f7e4e1;
+    .detail-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .outline-btn,
+    .danger-btn {
+      min-height: 44px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .danger-btn {
+      border-color: #f1a3a3;
       color: var(--danger);
     }
 
-    .icon-btn {
-      width: 42px;
-      height: 42px;
-      padding: 0;
-      border-radius: 8px;
+    .home-search {
+      margin-bottom: 14px;
     }
 
     .recipe-list {
@@ -202,168 +411,95 @@
 
     .recipe-card {
       width: 100%;
-      text-align: left;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--surface-strong);
-      padding: 13px;
-      color: inherit;
+      background: #fff;
+      padding: 14px;
+      text-align: left;
+      color: var(--text);
     }
 
-    .recipe-card:hover {
-      border-color: var(--primary);
-    }
-
-    .recipe-card h2 {
-      margin: 0 0 7px;
+    .recipe-card h3 {
+      margin: 0 0 8px;
       font-size: 1rem;
       letter-spacing: 0;
       overflow-wrap: anywhere;
     }
 
-    .recipe-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      color: var(--muted);
-      font-size: 0.82rem;
-    }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      min-height: 26px;
-      border-radius: 999px;
-      background: #f1eee7;
-      padding: 4px 9px;
-    }
-
-    .empty {
-      text-align: center;
-      color: var(--muted);
-      padding: 34px 16px;
-      border: 1px dashed var(--line);
-      border-radius: 8px;
-      background: rgba(255, 253, 250, 0.68);
-    }
-
-    .screen-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .screen-head h2 {
+    .recipe-card p {
       margin: 0;
-      font-size: 1.22rem;
-      letter-spacing: 0;
-    }
-
-    .upload-box {
-      border: 1px dashed var(--primary);
-      border-radius: 8px;
-      background: #f6fbf8;
-      padding: 16px;
-      display: grid;
-      gap: 11px;
-      margin-bottom: 14px;
-    }
-
-    .file-input {
-      display: grid;
-      gap: 8px;
-    }
-
-    .file-note,
-    .ocr-status {
       color: var(--muted);
       font-size: 0.86rem;
       line-height: 1.45;
     }
 
-    .ocr-status strong {
-      color: var(--primary-dark);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .field {
-      display: grid;
-      gap: 6px;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      color: var(--muted);
-      font-size: 0.84rem;
-      font-weight: 700;
-    }
-
-    .form-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 9px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    .detail-title {
-      margin: 0 0 8px;
-      font-size: 1.45rem;
-      overflow-wrap: anywhere;
-      letter-spacing: 0;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .detail-section {
-      border-top: 1px solid var(--line);
-      padding-top: 12px;
-      min-width: 0;
-    }
-
-    .detail-section.full {
-      grid-column: 1 / -1;
-    }
-
-    .detail-section h3 {
-      margin: 0 0 7px;
-      color: var(--muted);
-      font-size: 0.86rem;
-      letter-spacing: 0;
-    }
-
-    .detail-section p {
-      margin: 0;
-      white-space: pre-wrap;
-      line-height: 1.65;
-      overflow-wrap: anywhere;
-    }
-
-    .raw-preview {
-      max-height: 190px;
-      overflow: auto;
-      background: #27231f;
-      color: #fffaf1;
+    .empty {
+      border: 1px dashed var(--line);
       border-radius: 8px;
-      padding: 12px;
-      font-size: 0.86rem;
-      white-space: pre-wrap;
-      line-height: 1.5;
+      padding: 28px 14px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.55;
+    }
+
+    .bottom-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--soft-line);
+      background: #fff;
+    }
+
+    .nav-btn {
+      min-height: 64px;
+      color: #6b7280;
+      display: grid;
+      place-items: center;
+      gap: 2px;
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+
+    .nav-btn.active {
+      color: var(--primary);
+    }
+
+    .summary {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 18px;
+    }
+
+    .summary-card {
+      border: 1px solid #cae6d6;
+      border-radius: 8px;
+      background: #fff;
+      padding: 16px;
+    }
+
+    .summary-card h2 {
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+      font-size: 1.05rem;
+      letter-spacing: 0;
+    }
+
+    .summary-card ul {
+      margin: 0;
+      padding-left: 20px;
+      line-height: 1.7;
+    }
+
+    .summary-card.checks li {
+      list-style: none;
+      margin-left: -20px;
+    }
+
+    .summary-card.checks li::before {
+      content: "✓";
+      color: var(--primary);
+      font-weight: 900;
+      margin-right: 8px;
     }
 
     .toast {
@@ -371,16 +507,14 @@
       left: 50%;
       bottom: 18px;
       transform: translateX(-50%);
-      background: #24211d;
-      color: white;
-      padding: 10px 14px;
       border-radius: 999px;
-      box-shadow: var(--shadow);
+      background: #1f2328;
+      color: #fff;
+      padding: 10px 14px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.18s ease;
-      font-size: 0.88rem;
-      z-index: 5;
+      z-index: 10;
     }
 
     .toast.show {
@@ -391,264 +525,396 @@
       display: none !important;
     }
 
-    @media (max-width: 680px) {
-      .app-shell {
-        padding: 14px 10px 90px;
-      }
-
-      .topbar,
-      .home-controls,
-      .screen-head {
-        align-items: stretch;
-      }
-
-      .topbar {
-        flex-direction: column;
-      }
-
-      .home-controls {
+    @media (max-width: 900px) {
+      .flow-grid,
+      .screen-grid,
+      .summary {
         grid-template-columns: 1fr;
       }
 
-      .toolbar,
-      .screen-head {
-        justify-content: space-between;
+      .flow-arrow {
+        display: none;
       }
 
-      .form-grid,
-      .detail-grid {
-        grid-template-columns: 1fr;
+      .phone {
+        min-height: 680px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .app {
+        padding: 12px 8px 72px;
       }
 
-      .btn {
-        width: 100%;
+      .hero {
+        grid-template-columns: 58px 1fr;
+        gap: 12px;
+        margin-bottom: 20px;
       }
 
-      .toolbar .btn,
-      .screen-head .btn,
-      .form-actions .btn {
-        width: auto;
+      .logo {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+      }
+
+      .hero p,
+      .flow,
+      .summary {
+        display: none;
+      }
+
+      .screen-grid {
+        gap: 12px;
+      }
+
+      .phone {
+        min-height: calc(100vh - 104px);
       }
     }
   </style>
 </head>
 <body>
-  <main class="app-shell">
-    <header class="topbar">
-      <div class="brand">
-        <h1>家庭用レシピ保存</h1>
-        <p>画像は保存せず、OCRで読み取ったテキストだけを残します。</p>
+  <main class="app">
+    <header class="hero">
+      <div class="logo" aria-hidden="true">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m15 11 5.5-5.5"/><path d="m14 12 6 6"/><path d="M4 3v7a4 4 0 0 0 4 4h1"/><path d="M4 3h0"/><path d="M8 3v7"/><path d="M12 3v7"/><path d="M5 21 21 5"/></svg>
       </div>
-      <div class="toolbar">
-        <button class="btn secondary" id="homeButton" type="button" title="ホームへ戻る">
-          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
-          ホーム
-        </button>
+      <div>
+        <h1>レシピ保存アプリ</h1>
+        <p>画像を取り込んで、テキストで保存。シンプルに、使いやすく。</p>
       </div>
     </header>
 
-    <section class="view active" id="homeView">
-      <div class="home-controls">
-        <div class="search-wrap">
-          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <input id="searchInput" type="search" placeholder="タイトル・材料・メモで検索">
-        </div>
-        <button class="btn" id="newRecipeButton" type="button">
-          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-          新規追加
-        </button>
+    <section class="flow" aria-label="新しいレシピを追加する流れ">
+      <h2>新しいレシピを追加する流れ</h2>
+      <div class="flow-grid">
+        <article class="flow-card">
+          <div>
+            <h3><span class="num">1</span>画像を取り込む</h3>
+            <p>レシピのスクショや写真を選択して取り込みます</p>
+          </div>
+          <svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="m21 15-5-5L5 19"/></svg>
+        </article>
+        <svg class="flow-arrow" aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        <article class="flow-card">
+          <div>
+            <h3><span class="num">2</span>内容を確認・編集</h3>
+            <p>タイトルを編集し、レシピ情報を確認して保存します</p>
+          </div>
+          <svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        </article>
+        <svg class="flow-arrow" aria-hidden="true" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        <article class="flow-card">
+          <div>
+            <h3><span class="num">3</span>保存完了</h3>
+            <p>レシピ一覧に保存され、いつでも確認できます</p>
+          </div>
+          <svg aria-hidden="true" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6 9 17l-5-5"/></svg>
+        </article>
       </div>
-      <div class="recipe-list" id="recipeList"></div>
     </section>
 
-    <section class="view" id="editView">
-      <div class="screen-head">
-        <h2 id="editHeading">新規追加</h2>
-        <button class="btn ghost" id="backFromEditButton" type="button">
-          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-          戻る
-        </button>
+    <section class="screen-grid" aria-label="アプリ画面">
+      <div class="phone">
+        <section class="view active" id="homeView">
+          <header class="phone-head">
+            <span></span>
+            <h2>レシピ一覧</h2>
+            <button type="button" id="menuButton" title="保存データ">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+            </button>
+          </header>
+          <div class="content">
+            <input class="home-search" id="searchInput" type="search" placeholder="タイトル・レシピ情報・メモで検索">
+            <div class="recipe-list" id="recipeList"></div>
+          </div>
+          <nav class="bottom-nav" aria-label="ナビゲーション">
+            <button class="nav-btn active" type="button" data-nav="home">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+              ホーム
+            </button>
+            <button class="nav-btn" type="button" data-nav="new">
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+              新規追加
+            </button>
+            <button class="nav-btn" type="button" data-nav="settings">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.05.05a2 2 0 1 1-2.83 2.83l-.05-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6l-.06.05a2 2 0 1 1-3.88 0L10 20a1.7 1.7 0 0 0-1-.6 1.7 1.7 0 0 0-1.88.34l-.05.05a2 2 0 1 1-2.83-2.83l.05-.05A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1l-.05-.06a2 2 0 1 1 0-3.88L4 10a1.7 1.7 0 0 0 .6-1 1.7 1.7 0 0 0-.34-1.88l-.05-.05a2 2 0 1 1 2.83-2.83l.05.05A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6l.06-.05a2 2 0 1 1 3.88 0L14 4a1.7 1.7 0 0 0 1 .6 1.7 1.7 0 0 0 1.88-.34l.05-.05a2 2 0 1 1 2.83 2.83l-.05.05A1.7 1.7 0 0 0 19.4 9c.05.34.25.7.6 1l.05.06a2 2 0 1 1 0 3.88L20 14c-.35.3-.55.66-.6 1Z"/></svg>
+              設定
+            </button>
+          </nav>
+        </section>
+
+        <section class="view" id="addView">
+          <header class="phone-head">
+            <button type="button" class="backButton" title="戻る">
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2>新しいレシピ</h2>
+            <span></span>
+          </header>
+          <div class="content">
+            <h3 class="section-title">画像を取り込み</h3>
+            <label class="drop-zone" for="imageInput">
+              <svg aria-hidden="true" width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14.5 4h-5L8 7H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-1.5-3Z"/><circle cx="12" cy="13" r="3"/></svg>
+              <strong>画像を選択または撮影</strong>
+              <span>ここにドラッグ＆ドロップもできます</span>
+            </label>
+            <input class="hidden" id="imageInput" type="file" accept="image/*">
+            <div class="choice-row">
+              <button class="choice" id="libraryButton" type="button">
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V7a2 2 0 0 1 2-2h3l2 2h7a2 2 0 0 1 2 2v10.5Z"/></svg>
+                ライブラリから選択
+              </button>
+              <button class="choice" id="cameraButton" type="button">
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4h-5L8 7H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-1.5-3Z"/><circle cx="12" cy="13" r="3"/></svg>
+                カメラで撮影
+              </button>
+            </div>
+            <h3 class="section-title">取り込み画像のプレビュー</h3>
+            <img class="preview-img" id="imagePreview" alt="取り込み画像のプレビュー">
+            <button class="primary-btn" id="ocrButton" type="button" disabled>テキストを読み取る（OCR）</button>
+            <button class="outline-btn" id="manualAddButton" type="button">画像なしで手入力する</button>
+            <div class="notice" id="ocrStatus">※ 画像データは保存されません。<br>テキストのみを保存します。</div>
+          </div>
+          <nav class="bottom-nav" aria-label="ナビゲーション">
+            <button class="nav-btn" type="button" data-nav="home">ホーム</button>
+            <button class="nav-btn active" type="button" data-nav="new">新規追加</button>
+            <button class="nav-btn" type="button" data-nav="settings">設定</button>
+          </nav>
+        </section>
+
+        <section class="view" id="editView">
+          <header class="phone-head">
+            <button type="button" class="backButton" title="戻る">
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2>内容を確認・編集</h2>
+            <button class="save-chip" id="topSaveButton" type="button">保存</button>
+          </header>
+          <form class="content" id="recipeForm">
+            <div class="form-field">
+              <label for="titleInput">タイトル <span class="label-note">（編集できます）</span></label>
+              <input id="titleInput" required placeholder="例：鶏むね肉のしっとり塩麹焼き">
+            </div>
+            <div class="form-field">
+              <label for="recipeInfoInput">レシピ情報 <span class="label-note">（画像内の情報そのまま）</span></label>
+              <textarea id="recipeInfoInput" required placeholder="OCRで読み取った材料・作り方などを確認して整えてください"></textarea>
+            </div>
+            <div class="form-field">
+              <label for="memoInput">メモ <span class="label-note">（自由に入力できます）</span></label>
+              <textarea id="memoInput" placeholder="メモを入力（任意）"></textarea>
+            </div>
+            <div class="notice">※ 画像データは保存されません。<br>テキストのみを保存します。</div>
+          </form>
+        </section>
+
+        <section class="view" id="detailView">
+          <header class="phone-head">
+            <button type="button" class="backButton" title="戻る">
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2>レシピ詳細</h2>
+            <button type="button" id="detailMenuButton" title="メニュー">
+              <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+            </button>
+          </header>
+          <div class="content" id="detailContent"></div>
+          <nav class="bottom-nav" aria-label="ナビゲーション">
+            <button class="nav-btn" type="button" data-nav="home">ホーム</button>
+            <button class="nav-btn" type="button" data-nav="new">新規追加</button>
+            <button class="nav-btn" type="button" data-nav="settings">設定</button>
+          </nav>
+        </section>
+
+        <section class="view" id="settingsView">
+          <header class="phone-head">
+            <button type="button" class="backButton" title="戻る">
+              <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <h2>設定</h2>
+            <span></span>
+          </header>
+          <div class="content">
+            <span class="pill">保存されるデータ</span>
+            <div class="info-box">タイトル
+レシピ情報（画像内の情報そのまま）
+メモ
+作成日・更新日</div>
+            <div class="notice">画像データ、画像プレビュー、ファイル名は保存しません。</div>
+          </div>
+          <nav class="bottom-nav" aria-label="ナビゲーション">
+            <button class="nav-btn" type="button" data-nav="home">ホーム</button>
+            <button class="nav-btn" type="button" data-nav="new">新規追加</button>
+            <button class="nav-btn active" type="button" data-nav="settings">設定</button>
+          </nav>
+        </section>
       </div>
 
-      <div class="upload-box" id="uploadBox">
-        <div class="file-input">
-          <label for="imageInput">レシピ画像</label>
-          <input id="imageInput" type="file" accept="image/*">
+      <div class="phone" aria-hidden="true">
+        <header class="phone-head">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          <h2>内容を確認・編集</h2>
+          <span class="save-chip">保存</span>
+        </header>
+        <div class="content">
+          <div class="form-field">
+            <label>タイトル <span class="label-note">（編集できます）</span></label>
+            <input value="鶏むね肉のしっとり塩麹焼き" readonly>
+          </div>
+          <div class="form-field">
+            <label>レシピ情報 <span class="label-note">（画像内の情報そのまま）</span></label>
+            <textarea readonly>【材料】（2人分）
+鶏むね肉 1枚（約300g）
+塩麹 大さじ2
+酒 大さじ1
+しょうが（すりおろし）小さじ1/2
+サラダ油 適量
+
+【作り方】
+① 鶏むね肉は皮を取り、厚みを均一にする。
+② 保存袋に鶏肉と塩麹、酒、しょうがを入れてよくもみ込み、冷蔵庫で30分〜1時間置く。
+③ フライパンにサラダ油を熱し、②を入れて中火で焼く。
+④ 焼き色がついたら裏返し、弱火にして蓋をし、5〜7分蒸し焼きにする。
+⑤ 火が通ったら取り出し、食べやすく切って器に盛る。
+
+※ お好みでレモンや大葉を添えてもおいしいです。</textarea>
+          </div>
+          <div class="form-field">
+            <label>メモ <span class="label-note">（自由に入力できます）</span></label>
+            <textarea readonly placeholder="メモを入力（任意）"></textarea>
+          </div>
+          <div class="notice">※ 画像データは保存されません。<br>テキストのみを保存します。</div>
         </div>
-        <button class="btn secondary" id="ocrButton" type="button" disabled>
-          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h6"/></svg>
-          OCR実行
-        </button>
-        <div class="file-note">保存されるのは下の編集欄の内容だけです。画像ファイル名や画像データは保存しません。</div>
-        <div class="ocr-status" id="ocrStatus"></div>
-        <div class="raw-preview hidden" id="rawPreview"></div>
       </div>
 
-      <form class="panel" id="recipeForm">
-        <div class="form-grid">
-          <div class="field full">
-            <label for="titleInput">タイトル</label>
-            <input id="titleInput" required placeholder="例：鶏むね肉の照り焼き">
-          </div>
-          <div class="field">
-            <label for="categoryInput">カテゴリ</label>
-            <select id="categoryInput">
-              <option value="主菜">主菜</option>
-              <option value="副菜">副菜</option>
-              <option value="汁物">汁物</option>
-              <option value="ご飯・麺">ご飯・麺</option>
-              <option value="お弁当">お弁当</option>
-              <option value="お菓子">お菓子</option>
-              <option value="その他">その他</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="timeInput">調理時間</label>
-            <input id="timeInput" placeholder="例：20分">
-          </div>
-          <div class="field">
-            <label for="servingsInput">分量</label>
-            <input id="servingsInput" placeholder="例：2人分">
-          </div>
-          <div class="field full">
-            <label for="ingredientsInput">材料</label>
-            <textarea id="ingredientsInput" placeholder="材料を1行ずつ入力"></textarea>
-          </div>
-          <div class="field full">
-            <label for="stepsInput">作り方</label>
-            <textarea id="stepsInput" placeholder="手順を入力"></textarea>
-          </div>
-          <div class="field full">
-            <label for="memoInput">メモ</label>
-            <textarea id="memoInput" placeholder="OCRの気になる箇所、味の調整、家族の好みなど"></textarea>
+      <div class="phone" aria-hidden="true">
+        <header class="phone-head">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          <h2>レシピ詳細</h2>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+        </header>
+        <div class="content">
+          <h1 class="recipe-title">鶏むね肉のしっとり塩麹焼き</h1>
+          <span class="pill">レシピ情報</span>
+          <div class="info-box">【材料】（2人分）
+鶏むね肉 1枚（約300g）
+塩麹 大さじ2
+酒 大さじ1
+しょうが（すりおろし）小さじ1/2
+サラダ油 適量
+
+【作り方】
+① 鶏むね肉は皮を取り、厚みを均一にする。
+② 保存袋に鶏肉と塩麹、酒、しょうがを入れてよくもみ込み、冷蔵庫で30分〜1時間置く。
+③ フライパンにサラダ油を熱し、②を入れて中火で焼く。
+④ 焼き色がついたら裏返し、弱火にして蓋をし、5〜7分蒸し焼きにする。
+⑤ 火が通ったら取り出し、食べやすく切って器に盛る。</div>
+          <span class="pill">メモ</span>
+          <div class="info-box">レモンを添えるとさっぱりして美味しい。
+お弁当にも。</div>
+          <div class="detail-actions">
+            <button class="outline-btn" type="button">編集</button>
+            <button class="danger-btn" type="button">削除</button>
           </div>
         </div>
-        <div class="form-actions">
-          <button class="btn ghost" id="cancelEditButton" type="button">キャンセル</button>
-          <button class="btn" type="submit">
-            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
-            保存
-          </button>
-        </div>
-      </form>
+        <nav class="bottom-nav" aria-label="ナビゲーション">
+          <button class="nav-btn" type="button">ホーム</button>
+          <button class="nav-btn active" type="button">新規追加</button>
+          <button class="nav-btn" type="button">設定</button>
+        </nav>
+      </div>
     </section>
 
-    <section class="view" id="detailView">
-      <div class="screen-head">
-        <h2>レシピ詳細</h2>
-        <button class="btn ghost" id="backFromDetailButton" type="button">
-          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-          戻る
-        </button>
-      </div>
-      <article class="panel" id="detailContent"></article>
+    <section class="summary" aria-label="改善点と保存データ">
+      <article class="summary-card">
+        <h2>今回の改善点</h2>
+        <ul>
+          <li>調理時間は項目から削除しました</li>
+          <li>メモ欄はそのまま残しました</li>
+          <li>その他の情報は「レシピ情報」1つにまとめ、画像内の情報をそのままペーストします</li>
+          <li>シンプルで見やすく、編集しやすい構成にしました</li>
+        </ul>
+      </article>
+      <article class="summary-card checks">
+        <h2>保存されるデータ（テキストのみ）</h2>
+        <ul>
+          <li>タイトル</li>
+          <li>レシピ情報（画像内の情報そのまま）</li>
+          <li>メモ</li>
+          <li>作成日・更新日</li>
+        </ul>
+      </article>
     </section>
   </main>
 
   <div class="toast" id="toast"></div>
-
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <script>
-    const STORAGE_KEY = "home-recipe-text-only-v1";
+    const STORAGE_KEY = "home-recipe-text-only-v2";
+    const OLD_STORAGE_KEY = "home-recipe-text-only-v1";
     const views = {
       home: document.getElementById("homeView"),
+      add: document.getElementById("addView"),
       edit: document.getElementById("editView"),
-      detail: document.getElementById("detailView")
+      detail: document.getElementById("detailView"),
+      settings: document.getElementById("settingsView")
     };
 
-    const recipeList = document.getElementById("recipeList");
     const searchInput = document.getElementById("searchInput");
-    const form = document.getElementById("recipeForm");
-    const uploadBox = document.getElementById("uploadBox");
+    const recipeList = document.getElementById("recipeList");
     const imageInput = document.getElementById("imageInput");
+    const imagePreview = document.getElementById("imagePreview");
+    const dropZone = document.querySelector(".drop-zone");
     const ocrButton = document.getElementById("ocrButton");
     const ocrStatus = document.getElementById("ocrStatus");
-    const rawPreview = document.getElementById("rawPreview");
-    const editHeading = document.getElementById("editHeading");
+    const recipeForm = document.getElementById("recipeForm");
+    const titleInput = document.getElementById("titleInput");
+    const recipeInfoInput = document.getElementById("recipeInfoInput");
+    const memoInput = document.getElementById("memoInput");
     const detailContent = document.getElementById("detailContent");
     const toast = document.getElementById("toast");
-
-    const fields = {
-      title: document.getElementById("titleInput"),
-      category: document.getElementById("categoryInput"),
-      ingredients: document.getElementById("ingredientsInput"),
-      steps: document.getElementById("stepsInput"),
-      time: document.getElementById("timeInput"),
-      servings: document.getElementById("servingsInput"),
-      memo: document.getElementById("memoInput")
-    };
 
     let recipes = loadRecipes();
     let editingId = null;
     let currentDetailId = null;
     let selectedImageFile = null;
+    let previewUrl = "";
 
     function loadRecipes() {
+      const current = readJson(STORAGE_KEY);
+      if (current) return current;
+
+      const old = readJson(OLD_STORAGE_KEY);
+      if (!old) return [];
+
+      const migrated = old.map((recipe) => ({
+        id: recipe.id || crypto.randomUUID(),
+        title: recipe.title || "無題のレシピ",
+        recipeInfo: [
+          recipe.ingredients ? `【材料】\n${recipe.ingredients}` : "",
+          recipe.steps ? `【作り方】\n${recipe.steps}` : "",
+          recipe.time ? `【調理時間】\n${recipe.time}` : "",
+          recipe.servings ? `【分量】\n${recipe.servings}` : ""
+        ].filter(Boolean).join("\n\n") || recipe.memo || "",
+        memo: recipe.memo || "",
+        createdAt: recipe.createdAt || new Date().toISOString(),
+        updatedAt: recipe.updatedAt || new Date().toISOString()
+      }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+      return migrated;
+    }
+
+    function readJson(key) {
       try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        return JSON.parse(localStorage.getItem(key));
       } catch {
-        return [];
+        return null;
       }
     }
 
     function saveRecipes() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(recipes));
-    }
-
-    function showView(name) {
-      Object.values(views).forEach((view) => view.classList.remove("active"));
-      views[name].classList.add("active");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function todayIso() {
-      return new Date().toISOString();
-    }
-
-    function formatDate(value) {
-      if (!value) return "";
-      return new Intl.DateTimeFormat("ja-JP", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-      }).format(new Date(value));
-    }
-
-    function normalizeText(value) {
-      return (value || "").replace(/\r\n/g, "\n").trim();
-    }
-
-    function renderHome() {
-      const query = searchInput.value.trim().toLowerCase();
-      const filtered = recipes
-        .filter((recipe) => {
-          const haystack = [
-            recipe.title,
-            recipe.category,
-            recipe.ingredients,
-            recipe.steps,
-            recipe.memo
-          ].join(" ").toLowerCase();
-          return haystack.includes(query);
-        })
-        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-
-      if (!filtered.length) {
-        recipeList.innerHTML = `<div class="empty">${recipes.length ? "該当するレシピがありません。" : "まだレシピがありません。新規追加からOCRで登録できます。"}</div>`;
-        return;
-      }
-
-      recipeList.innerHTML = filtered.map((recipe) => `
-        <button class="recipe-card" type="button" data-id="${recipe.id}">
-          <h2>${escapeHtml(recipe.title || "無題のレシピ")}</h2>
-          <div class="recipe-meta">
-            <span class="tag">${escapeHtml(recipe.category || "未分類")}</span>
-            ${recipe.time ? `<span class="tag">${escapeHtml(recipe.time)}</span>` : ""}
-            ${recipe.servings ? `<span class="tag">${escapeHtml(recipe.servings)}</span>` : ""}
-            <span class="tag">更新 ${formatDate(recipe.updatedAt)}</span>
-          </div>
-        </button>
-      `).join("");
     }
 
     function escapeHtml(value) {
@@ -660,34 +926,84 @@
         .replace(/'/g, "&#039;");
     }
 
-    function openNewRecipe() {
-      editingId = null;
-      editHeading.textContent = "新規追加";
-      uploadBox.classList.remove("hidden");
-      form.reset();
-      fields.category.value = "主菜";
+    function normalizeText(value) {
+      return String(value || "").replace(/\r\n/g, "\n").trim();
+    }
+
+    function shortDate(value) {
+      return new Intl.DateTimeFormat("ja-JP", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).format(new Date(value));
+    }
+
+    function showView(name) {
+      Object.values(views).forEach((view) => view.classList.remove("active"));
+      views[name].classList.add("active");
+      document.querySelectorAll("[data-nav]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.nav === name || (name === "add" && button.dataset.nav === "new"));
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderHome() {
+      const query = searchInput.value.trim().toLowerCase();
+      const filtered = recipes
+        .filter((recipe) => [recipe.title, recipe.recipeInfo, recipe.memo].join(" ").toLowerCase().includes(query))
+        .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+
+      if (!filtered.length) {
+        recipeList.innerHTML = `<div class="empty">${recipes.length ? "該当するレシピがありません。" : "まだレシピがありません。新規追加から登録できます。"}</div>`;
+        return;
+      }
+
+      recipeList.innerHTML = filtered.map((recipe) => `
+        <button class="recipe-card" type="button" data-id="${recipe.id}">
+          <h3>${escapeHtml(recipe.title || "無題のレシピ")}</h3>
+          <p>更新 ${shortDate(recipe.updatedAt)}<br>${escapeHtml((recipe.recipeInfo || "").slice(0, 54))}</p>
+        </button>
+      `).join("");
+    }
+
+    function clearImageSelection() {
       selectedImageFile = null;
       imageInput.value = "";
       ocrButton.disabled = true;
-      ocrStatus.textContent = "";
-      rawPreview.classList.add("hidden");
-      rawPreview.textContent = "";
-      showView("edit");
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = "";
+      imagePreview.removeAttribute("src");
+      imagePreview.style.display = "none";
+    }
+
+    function setSelectedImage(file) {
+      selectedImageFile = file;
+      if (!selectedImageFile) return;
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      previewUrl = URL.createObjectURL(selectedImageFile);
+      imagePreview.src = previewUrl;
+      imagePreview.style.display = "block";
+      ocrButton.disabled = false;
+      ocrStatus.innerHTML = "画像を選択しました。OCRでテキスト化できます。";
+    }
+
+    function openNewRecipe() {
+      editingId = null;
+      titleInput.value = "";
+      recipeInfoInput.value = "";
+      memoInput.value = "";
+      clearImageSelection();
+      ocrStatus.innerHTML = "※ 画像データは保存されません。<br>テキストのみを保存します。";
+      showView("add");
     }
 
     function openEditRecipe(id) {
       const recipe = recipes.find((item) => item.id === id);
       if (!recipe) return;
       editingId = id;
-      editHeading.textContent = "レシピ編集";
-      uploadBox.classList.add("hidden");
-      fields.title.value = recipe.title || "";
-      fields.category.value = recipe.category || "その他";
-      fields.ingredients.value = recipe.ingredients || "";
-      fields.steps.value = recipe.steps || "";
-      fields.time.value = recipe.time || "";
-      fields.servings.value = recipe.servings || "";
-      fields.memo.value = recipe.memo || "";
+      titleInput.value = recipe.title || "";
+      recipeInfoInput.value = recipe.recipeInfo || "";
+      memoInput.value = recipe.memo || "";
       showView("edit");
     }
 
@@ -696,42 +1012,18 @@
       if (!recipe) return;
       currentDetailId = id;
       detailContent.innerHTML = `
-        <h1 class="detail-title">${escapeHtml(recipe.title || "無題のレシピ")}</h1>
-        <div class="recipe-meta">
-          <span class="tag">${escapeHtml(recipe.category || "未分類")}</span>
-          ${recipe.time ? `<span class="tag">${escapeHtml(recipe.time)}</span>` : ""}
-          ${recipe.servings ? `<span class="tag">${escapeHtml(recipe.servings)}</span>` : ""}
-          <span class="tag">作成 ${formatDate(recipe.createdAt)}</span>
-          <span class="tag">更新 ${formatDate(recipe.updatedAt)}</span>
-        </div>
-        <div class="detail-grid">
-          <section class="detail-section full">
-            <h3>材料</h3>
-            <p>${escapeHtml(recipe.ingredients || "未入力")}</p>
-          </section>
-          <section class="detail-section full">
-            <h3>作り方</h3>
-            <p>${escapeHtml(recipe.steps || "未入力")}</p>
-          </section>
-          <section class="detail-section">
-            <h3>調理時間</h3>
-            <p>${escapeHtml(recipe.time || "未入力")}</p>
-          </section>
-          <section class="detail-section">
-            <h3>分量</h3>
-            <p>${escapeHtml(recipe.servings || "未入力")}</p>
-          </section>
-          <section class="detail-section full">
-            <h3>メモ</h3>
-            <p>${escapeHtml(recipe.memo || "未入力")}</p>
-          </section>
-        </div>
-        <div class="form-actions">
-          <button class="btn secondary" type="button" id="detailEditButton">
+        <h1 class="recipe-title">${escapeHtml(recipe.title || "無題のレシピ")}</h1>
+        <span class="pill">レシピ情報</span>
+        <div class="info-box">${escapeHtml(recipe.recipeInfo || "未入力")}</div>
+        <span class="pill">メモ</span>
+        <div class="info-box">${escapeHtml(recipe.memo || "未入力")}</div>
+        <p class="label-note">作成日 ${shortDate(recipe.createdAt)} / 更新日 ${shortDate(recipe.updatedAt)}</p>
+        <div class="detail-actions">
+          <button class="outline-btn" type="button" id="editButton">
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
             編集
           </button>
-          <button class="btn danger" type="button" id="detailDeleteButton">
+          <button class="danger-btn" type="button" id="deleteButton">
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="m19 6-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
             削除
           </button>
@@ -741,162 +1033,124 @@
     }
 
     function titleFromText(text) {
+      const skip = /^(材料|作り方|手順|レシピ情報|memo|メモ|recipe)$/i;
       const lines = normalizeText(text)
         .split("\n")
         .map((line) => line.replace(/[【】■□●○]/g, "").trim())
-        .filter(Boolean);
-      const skip = /^(材料|作り方|手順|memo|メモ|調理時間|分量|ingredients?|recipe)$/i;
-      const candidate = lines.find((line) => line.length >= 3 && line.length <= 32 && !skip.test(line));
-      return candidate || lines[0] || "無題のレシピ";
-    }
-
-    function guessCategory(text) {
-      if (/ケーキ|クッキー|砂糖|デザート|お菓子|プリン/.test(text)) return "お菓子";
-      if (/スープ|汁|味噌汁|みそ汁/.test(text)) return "汁物";
-      if (/ご飯|丼|麺|パスタ|うどん|そば|ラーメン/.test(text)) return "ご飯・麺";
-      if (/弁当|おにぎり/.test(text)) return "お弁当";
-      if (/サラダ|和え|副菜/.test(text)) return "副菜";
-      return "主菜";
-    }
-
-    function parseOcrText(text) {
-      const cleaned = normalizeText(text);
-      const lines = cleaned.split("\n").map((line) => line.trim()).filter(Boolean);
-      const ingredients = [];
-      const steps = [];
-      let mode = "";
-      let time = "";
-      let servings = "";
-
-      lines.forEach((line) => {
-        if (/材料|ingredients?/i.test(line)) {
-          mode = "ingredients";
-          return;
-        }
-        if (/作り方|手順|つくり方|how to/i.test(line)) {
-          mode = "steps";
-          return;
-        }
-        if (!time) {
-          const match = line.match(/(?:調理時間|所要時間)?\s*([0-9０-９]+)\s*(分|時間)/);
-          if (match) time = `${match[1]}${match[2]}`;
-        }
-        if (!servings) {
-          const match = line.match(/([0-9０-９]+)\s*(人分|個分|本分|皿分|枚分)/);
-          if (match) servings = `${match[1]}${match[2]}`;
-        }
-        if (mode === "ingredients") {
-          ingredients.push(line);
-        } else if (mode === "steps" || /^[0-9０-９]+[.)．、]/.test(line)) {
-          mode = "steps";
-          steps.push(line);
-        }
-      });
-
-      const title = titleFromText(cleaned);
-      return {
-        title,
-        category: guessCategory(cleaned),
-        ingredients: ingredients.join("\n"),
-        steps: steps.join("\n"),
-        time,
-        servings,
-        memo: cleaned ? `OCR抽出結果を確認済み\n\n${cleaned}` : ""
-      };
+        .filter((line) => line && !skip.test(line));
+      return lines.find((line) => line.length >= 3 && line.length <= 34) || lines[0] || "無題のレシピ";
     }
 
     async function runOcr() {
       if (!selectedImageFile) return;
       if (!window.Tesseract) {
-        ocrStatus.innerHTML = "<strong>OCRライブラリを読み込めませんでした。</strong> インターネット接続を確認してください。";
+        ocrStatus.innerHTML = "OCRライブラリを読み込めませんでした。インターネット接続を確認してください。";
         return;
       }
 
       ocrButton.disabled = true;
-      ocrStatus.innerHTML = "<strong>OCR実行中...</strong> 画像は保存せず、この処理にだけ使います。";
+      ocrStatus.innerHTML = "OCR実行中... 画像は保存せず、この処理にだけ使います。";
 
       try {
         const result = await Tesseract.recognize(selectedImageFile, "jpn+eng", {
           logger: (progress) => {
             if (progress.status === "recognizing text") {
-              const percent = Math.round(progress.progress * 100);
-              ocrStatus.innerHTML = `<strong>OCR実行中...</strong> ${percent}%`;
+              ocrStatus.textContent = `OCR実行中... ${Math.round(progress.progress * 100)}%`;
             }
           }
         });
         const text = normalizeText(result.data.text);
-        const parsed = parseOcrText(text);
-        fields.title.value = parsed.title;
-        fields.category.value = parsed.category;
-        fields.ingredients.value = parsed.ingredients;
-        fields.steps.value = parsed.steps;
-        fields.time.value = parsed.time;
-        fields.servings.value = parsed.servings;
-        fields.memo.value = parsed.memo;
-        rawPreview.textContent = text || "テキストを読み取れませんでした。手入力で保存できます。";
-        rawPreview.classList.remove("hidden");
-        ocrStatus.innerHTML = "<strong>OCR完了。</strong> 保存前に各項目を確認してください。";
-      } catch (error) {
-        ocrStatus.innerHTML = "<strong>OCRに失敗しました。</strong> 画像を変えるか、手入力で登録してください。";
-      } finally {
-        selectedImageFile = null;
-        imageInput.value = "";
-        ocrButton.disabled = true;
+        titleInput.value = titleFromText(text);
+        recipeInfoInput.value = text || "";
+        memoInput.value = "";
+        clearImageSelection();
+        ocrStatus.innerHTML = "OCR完了。内容を確認・編集して保存してください。";
+        showView("edit");
+      } catch {
+        ocrStatus.innerHTML = "OCRに失敗しました。画像を変えるか、手入力で登録してください。";
+        ocrButton.disabled = false;
       }
     }
 
-    function collectFormData() {
-      const now = todayIso();
+    function saveCurrentRecipe() {
+      const now = new Date().toISOString();
       const existing = recipes.find((recipe) => recipe.id === editingId);
-      return {
+      const recipe = {
         id: editingId || crypto.randomUUID(),
-        title: normalizeText(fields.title.value) || "無題のレシピ",
-        category: fields.category.value || "その他",
-        ingredients: normalizeText(fields.ingredients.value),
-        steps: normalizeText(fields.steps.value),
-        time: normalizeText(fields.time.value),
-        servings: normalizeText(fields.servings.value),
-        memo: normalizeText(fields.memo.value),
+        title: normalizeText(titleInput.value) || "無題のレシピ",
+        recipeInfo: normalizeText(recipeInfoInput.value),
+        memo: normalizeText(memoInput.value),
         createdAt: existing?.createdAt || now,
         updatedAt: now
       };
+
+      const index = recipes.findIndex((item) => item.id === recipe.id);
+      if (index >= 0) recipes[index] = recipe;
+      else recipes.push(recipe);
+      saveRecipes();
+      renderHome();
+      openDetail(recipe.id);
+      showToast("保存しました");
     }
 
     function showToast(message) {
       toast.textContent = message;
       toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 1900);
+      setTimeout(() => toast.classList.remove("show"), 1800);
     }
 
-    document.getElementById("homeButton").addEventListener("click", () => {
-      renderHome();
-      showView("home");
+    document.querySelectorAll("[data-nav]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.dataset.nav === "home") {
+          renderHome();
+          showView("home");
+        }
+        if (button.dataset.nav === "new") openNewRecipe();
+        if (button.dataset.nav === "settings") showView("settings");
+      });
     });
 
-    document.getElementById("newRecipeButton").addEventListener("click", openNewRecipe);
-    document.getElementById("backFromEditButton").addEventListener("click", () => {
-      if (editingId) openDetail(editingId);
-      else showView("home");
-    });
-    document.getElementById("cancelEditButton").addEventListener("click", () => {
-      if (editingId) openDetail(editingId);
-      else showView("home");
-    });
-    document.getElementById("backFromDetailButton").addEventListener("click", () => {
-      renderHome();
-      showView("home");
+    document.querySelectorAll(".backButton").forEach((button) => {
+      button.addEventListener("click", () => {
+        renderHome();
+        showView("home");
+      });
     });
 
-    imageInput.addEventListener("change", () => {
-      selectedImageFile = imageInput.files?.[0] || null;
-      ocrButton.disabled = !selectedImageFile;
-      ocrStatus.textContent = selectedImageFile ? "画像を選択しました。OCR実行でテキスト化します。" : "";
-      rawPreview.classList.add("hidden");
-      rawPreview.textContent = "";
+    document.getElementById("menuButton").addEventListener("click", () => showView("settings"));
+    document.getElementById("detailMenuButton").addEventListener("click", () => showView("settings"));
+    document.getElementById("libraryButton").addEventListener("click", () => {
+      imageInput.removeAttribute("capture");
+      imageInput.click();
     });
-
+    document.getElementById("cameraButton").addEventListener("click", () => {
+      imageInput.setAttribute("capture", "environment");
+      imageInput.click();
+    });
+    document.getElementById("manualAddButton").addEventListener("click", () => {
+      editingId = null;
+      titleInput.value = "";
+      recipeInfoInput.value = "";
+      memoInput.value = "";
+      clearImageSelection();
+      showView("edit");
+    });
+    document.getElementById("topSaveButton").addEventListener("click", saveCurrentRecipe);
     ocrButton.addEventListener("click", runOcr);
     searchInput.addEventListener("input", renderHome);
+
+    imageInput.addEventListener("change", () => {
+      setSelectedImage(imageInput.files?.[0] || null);
+    });
+
+    dropZone.addEventListener("dragover", (event) => {
+      event.preventDefault();
+    });
+
+    dropZone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      setSelectedImage(event.dataTransfer.files?.[0] || null);
+    });
 
     recipeList.addEventListener("click", (event) => {
       const card = event.target.closest(".recipe-card");
@@ -904,10 +1158,10 @@
     });
 
     detailContent.addEventListener("click", (event) => {
-      if (event.target.closest("#detailEditButton")) {
+      if (event.target.closest("#editButton")) {
         openEditRecipe(currentDetailId);
       }
-      if (event.target.closest("#detailDeleteButton")) {
+      if (event.target.closest("#deleteButton")) {
         const recipe = recipes.find((item) => item.id === currentDetailId);
         if (recipe && confirm(`「${recipe.title}」を削除しますか？`)) {
           recipes = recipes.filter((item) => item.id !== currentDetailId);
@@ -920,16 +1174,9 @@
       }
     });
 
-    form.addEventListener("submit", (event) => {
+    recipeForm.addEventListener("submit", (event) => {
       event.preventDefault();
-      const recipe = collectFormData();
-      const index = recipes.findIndex((item) => item.id === recipe.id);
-      if (index >= 0) recipes[index] = recipe;
-      else recipes.push(recipe);
-      saveRecipes();
-      renderHome();
-      openDetail(recipe.id);
-      showToast("保存しました");
+      saveCurrentRecipe();
     });
 
     renderHome();
